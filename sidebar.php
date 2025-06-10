@@ -72,6 +72,9 @@
                 <a href="./dashboard.php" aria-expanded="false"><i class="icon icon-app-store"></i><span class="nav-text">Dashboard</span></a>
             </li>
             <li>
+                <a href="./files-rules.php" aria-expanded="false"><i class="icon icon-book-open-2"></i><span class="nav-text">Rules & Regulations</span></a>
+            </li>
+            <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="icon icon-folder-15"></i><span class="nav-text">Files</span></a>
                 <ul aria-expanded="false">
                     <li><a href="./files-resolution.php">Resolution</a></li>
@@ -84,14 +87,18 @@
             </li>
             <?php if ($role === 'master') { ?>
                 <li>
-                    <a href="./manageAccounts.php" aria-expanded="false"><i class="icon icon-users-mm"></i><span class="nav-text">Manage Accounts</span></a>
+                    <a href="./manageAccounts.php" aria-expanded="false"><i class="icon icon-single-04"></i><span class="nav-text">Manage Accounts</span></a>
                 </li>
             <?php } ?>
-            <?php if ($role === 'master') { ?>
-                <li>
-                    <a href="./files-officials.php" aria-expanded="false"><i class="icon icon-users-mm"></i><span class="nav-text">Composition Data</span></a>
-                </li>
-            <?php } ?>
+            <li>
+                <a href="./listOfMember.php" aria-expanded="false"><i class="icon icon-users-mm"></i><span class="nav-text">Members</span></a>
+            </li>
+            <li>
+                <a href="./listOfCommittee.php" aria-expanded="false"><i class="icon icon-single-content-03"></i><span class="nav-text">Committee</span></a>
+            </li>
+            <li>
+                <a href="./files-officials.php" aria-expanded="false"><i class="icon icon-single-copies"></i><span class="nav-text">Composition Data</span></a>
+            </li>
             <!-- <li>
                 <a href="./manual.php" aria-expanded="false"><i class="icon icon-book-open-2"></i><span class="nav-text">Manual</span></a>
             </li> -->

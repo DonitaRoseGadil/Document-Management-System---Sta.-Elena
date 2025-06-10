@@ -40,7 +40,14 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center p-3 mt-4">
-                                <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">ORGANIZARIONAL CHART</h1>
+                                <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">LIST OF ALL COMMITTEE</h1>
+                                <div class="button-container d-flex justify-content-end">
+                                    <?php if ($role === 'admin' || $role === 'master') { ?>
+                                        <a href="#">
+                                            <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;"><i class="fa fa-plus"></i>&nbsp;New Committe</button>
+                                        </a>
+                                    <?php } ?>
+                                </div>
                             </div>
                             <div class="card-body">
                                 
