@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2025 at 03:46 AM
+-- Generation Time: Jun 11, 2025 at 12:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -41,7 +41,20 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `email`, `password`, `role`, `account_status`, `token`) VALUES
-(1, 'StaElenaCN_SBSecretary', '$2y$10$Z8mtYeQBYBrwTUGhXsaRTe..DllUrtMfdYWwAdHlbnAjltTsf59Le', 'master', 'active', 'c8468f03ff4de7bbb45720d918e8d53ba693b29469bc5f4881c9384afd75d600');
+(1, 'StaElenaCN_SBSecretary', '$2y$10$WawE97QTa3IYWhWCNgtCReHPc/a8ZiebyEjRCC1x1KBMWOdj0h9p.', 'master', 'active', '9d4c8f6415fb95a440c4e686ba0d6884ced3fd59a950558bb69997593ca49d98');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `committee`
+--
+
+CREATE TABLE `committee` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `cmteDescription` varchar(100) DEFAULT NULL,
+  `cmteImage` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -57,6 +70,20 @@ CREATE TABLE `history_log` (
   `file_id` int(255) DEFAULT NULL,
   `title` text DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `member`
+--
+
+CREATE TABLE `member` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `term` varchar(100) DEFAULT NULL,
+  `position` varchar(100) DEFAULT NULL,
+  `committee_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -111,6 +138,9 @@ CREATE TABLE `officials` (
   `gsis_number` varchar(50) DEFAULT NULL,
   `pagibig_number` varchar(50) DEFAULT NULL,
   `philhealth_number` varchar(50) DEFAULT NULL,
+  `term` varchar(55) NOT NULL,
+  `committee` varchar(55) NOT NULL,
+  `committeeType` varchar(55) NOT NULL,
   `photo_path` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -169,10 +199,23 @@ ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `committee`
+--
+ALTER TABLE `committee`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `history_log`
 --
 ALTER TABLE `history_log`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `member`
+--
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `committee_id` (`committee_id`);
 
 --
 -- Indexes for table `minutes`
@@ -209,10 +252,22 @@ ALTER TABLE `accounts`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `committee`
+--
+ALTER TABLE `committee`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `history_log`
 --
 ALTER TABLE `history_log`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `member`
+--
+ALTER TABLE `member`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `minutes`
@@ -237,6 +292,16 @@ ALTER TABLE `ordinance`
 --
 ALTER TABLE `resolution`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `member`
+--
+ALTER TABLE `member`
+  ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`committee_id`) REFERENCES `committee` (`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
