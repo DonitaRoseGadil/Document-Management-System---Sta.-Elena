@@ -32,21 +32,87 @@ ini_set('display_errors', 1);
         <!--**********************************
             Content body start
         ***********************************-->
+
+        <!-- Report Modal -->
+        <div class="modal fade" id="reportModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header" style="background-color: #098209; color:#FFFFFF; border: none;">
+                    <h5 class="modal-title text-white"><i class="fa fa-file"></i> Generate Leave Applications Report</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="reportForm" enctype="multipart/form-data">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
+                                <input type="date" id="reportStartDate" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label><i class="fas fa-calendar-alt"></i> End Date:</label>
+                                <input type="date" id="reportEndDate" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Add the "All Reports" checkbox -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="generateAllReports">
+                                <label class="form-check-label" for="generateAllReports">
+                                     Generate All Reports (ignores date range)
+                                </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" id="generateReportBtn" class="btn btn-success text-white">
+                    <i class="fa fa-file"></i> Generate Report
+                </button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
         <div class="content-body">
             <div class="container-fluid">
+                
                 <!-- row -->
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center p-3 mt-4">
                                 <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">LIST OF RESOLUTION</h1>
-                                <div class="button-container d-flex justify-content-end">
-                                    <?php if ($role === 'admin' || $role === 'master') { ?>
-                                        <a href="addresolution.php">
-                                            <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;"><i class="fa fa-plus"></i>&nbsp;New Resolution</button>
-                                        </a>
-                                    <?php } ?>
-                                </div>
+
+                                    <div class="button-container d-flex justify-content-end ">
+                                        <?php if ($role === 'admin' || $role === 'master') { ?>
+                                            <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;" data-toggle="modal" data-target="#reportModal">
+                                                <i class="fa fa-file"></i>&nbsp;Generate Report
+                                            </button>
+                                        <?php } ?>
+                                    </div>
+                                
+                                    <div class="button-container d-flex justify-content-end ml-1">
+                                        <?php if ($role === 'admin' || $role === 'master') { ?>
+                                            <a href="addresolution.php">
+                                                <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;"><i class="fa fa-plus"></i>&nbsp;New Resolution</button>
+                                            </a>
+                                        <?php } ?>
+                                    </div>
+                               
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
