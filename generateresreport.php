@@ -178,5 +178,5 @@ if ($rowCount === 0) {
 }
 
 // Output PDF
-$pdf->Output('I', 'resolution_report.pdf');
+$pdf->Output('D', 'resolution_report.pdf');
 ?>
