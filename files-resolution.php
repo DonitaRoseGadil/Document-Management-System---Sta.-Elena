@@ -2,6 +2,7 @@
 include "header.php"; 
 error_reporting(E_ALL); // Enable error reporting for development
 ini_set('display_errors', 1);
+
 ?>
 
 <!DOCTYPE html>
@@ -46,15 +47,15 @@ ini_set('display_errors', 1);
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form id="reportForm" enctype="multipart/form-data">
+                    <form id="reportForm" action="generateresreport.php" enctype="multipart/form-data" method="POST">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
-                                <input type="date" id="reportStartDate" class="form-control" required>
+                                <input type="date" id="reportStartDate" name="reportStartDate" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label><i class="fas fa-calendar-alt"></i> End Date:</label>
-                                <input type="date" id="reportEndDate" class="form-control" required>
+                                <input type="date" id="reportEndDate" name="reportEndDate" class="form-control" required>
                             </div>
                         </div>
 
@@ -62,7 +63,7 @@ ini_set('display_errors', 1);
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="generateAllReports">
+                                <input class="form-check-input" type="checkbox" id="generateAllReports" name="generateAllReports" value="on">
                                 <label class="form-check-label" for="generateAllReports">
                                      Generate All Reports (ignores date range)
                                 </label>
@@ -361,6 +362,8 @@ ini_set('display_errors', 1);
 
 
     </script>
+
+    <script src="js/generatereport.js"></script>
 </body>
 
 </html>
