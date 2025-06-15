@@ -40,11 +40,11 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center p-3 mt-4">
-                                <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">LIST OF ALL MEMBERS</h1>
+                                <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">LIST OF ALL OFFICIALS</h1>
                                 <div class="button-container d-flex justify-content-end">
                                     <?php if ($role === 'admin' || $role === 'master') { ?>
-                                        <a href="#">
-                                            <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;"><i class="fa fa-plus"></i>&nbsp;New Member</button>
+                                        <a href="./addOfficials.php">
+                                            <button type="button" class="btn btn-primary" style="background-color: #098209; color:#FFFFFF; border: none;"><i class="fa fa-plus"></i>&nbsp;New Official</button>
                                         </a>
                                     <?php } ?>
                                     
@@ -70,7 +70,48 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-left" style="color: #000000;" >
-                                            
+                                            <?php
+                                                include "connect.php";
+                                                $sql = "SELECT id, photo_path, firstname, middlename, surname, position, term FROM officials";
+                                                $stmt = $conn->prepare($sql);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if (!$result) {
+                                                    die("SQL Error: " . $conn->error);
+                                                }
+
+                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                    ?>
+                                                    <tr>
+                                                        <td style="text-align: center; pointer-events: none; border-bottom: 1px solid #098209; border-left: 1px solid #098209;">
+                                                            <div class="round-img">
+                                                                <a href="#">
+                                                                    
+                                                                    <img src="<?php echo htmlspecialchars($row['photo_path']) ?>" alt="User Photo" style="max-width: 30%; height: auto; border-radius: 50%; object-fit: cover;">
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["firstname"] . " " . $row["middlename"] . " " . $row["surname"] ?></td>
+                                                        <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["position"]?></td>
+                                                        <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["term"]?></td>
+                                                        <td style="border-bottom: 1px solid #098209; border-right: 1px solid #098209; text-align: center; vertical-align: middle;">
+                                                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                                                <a href="#?id=<?php echo $row["id"] ?>" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center p-2">
+                                                                    <i class="fa fa-eye" aria-hidden="true" style="color: #FFFFFF;"></i>
+                                                                </a>
+                                                                <a onclick="confirmEdit(<?php echo $row['id']; ?>)" class="btn btn-success btn-sm d-flex align-items-center justify-content-center p-2 ml-1 mr-1">
+                                                                    <i class="fa fa-edit" aria-hidden="true" style="color: #FFFFFF;"></i>
+                                                                </a>
+                                                                <a onclick="confirmDelete(<?php echo $row['id']; ?>)" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center p-2">
+                                                                    <i class="fa fa-trash" aria-hidden="true" style="color: #FFFFFF"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            ?>
                                         </tbody>
                                     </table>
                                 </div>
