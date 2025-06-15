@@ -76,7 +76,7 @@
                                 ?>
 
                             <div class="card-body">
-                                <div id="accordion-nine" class="accordion accordion-active-header">
+                                <div id="accordion-nine" class="accordion accordion-active-header accordion-bordered">
                                     <?php if (empty($rules)): ?>
                                         <p class="text-muted text-center">No Rules added yet</p>
                                     <?php else: ?>
@@ -105,15 +105,24 @@
                                                 class="collapse accordion__body <?= $sectionCount === 1 ? 'show' : '' ?>"
                                                 data-parent="#accordion-nine">
                                                 <?php foreach ($section['contents'] as $content): ?>
-                                                    <div class="accordion__body--text">
+                                                    <div class="accordion__body--text" style="color: #000000;">
                                                         <?= htmlspecialchars($content['text']) ?>
                                                     </div>
                                                     <?php foreach ($content['subcontents'] as $sub): ?>
-                                                        <div class="accordion__body--text ms-4" style="text-indent: 25px;">
+                                                        <div class="accordion__body--text ms-4" style="text-indent: 25px; color: #000000;">
                                                             <?= htmlspecialchars($sub) ?>
                                                         </div>
                                                     <?php endforeach; ?>
                                                 <?php endforeach; ?>
+                                                <div class="content-footer d-flex justify-content-between align-items-center mt-3" style="margin: 0px 20px 0px 20px;">
+                                                    <p class="card-text text-gray d-inline" style="margin-bottom: 10px">Last updated on May 27, 2025 at 11:19 AM</p>
+                                                    <div style="margin-bottom: 10px">
+                                                        <a href="javascript:void(0)" onclick="confirmEdit(<?= $sectionId ?>)" class="card-link text-primary me-3">EDIT</a>
+                                                        <p class="card-text text-gray d-inline">|</p>
+                                                        <a href="javascript:void(0)" class="card-link text-danger delete-btn" data-id="<?= $sectionId ?>">DELETE</a>
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <?php endforeach; ?>
@@ -152,6 +161,119 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Attach delete click handler
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    confirmDelete(id);
+                });
+            });
+        });
+
+        // SweetAlert Password Prompt + Confirm Delete
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Enter Password",
+                input: "password",
+                inputAttributes: {
+                    autocapitalize: "off",
+                    required: true
+                },
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return fetch("validate_password.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "password=" + encodeURIComponent(password)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.message || "Incorrect password.");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(error.message);
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Confirm!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "The rule has been deleted.",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+
+                            // Redirect to delete PHP
+                            setTimeout(() => {
+                                window.location.href = 'deleterules.php?id=' + id;
+                            }, 2000); // delay to show success message
+                        }
+                    });
+                }
+            });
+        }
+
+        function confirmEdit(id) {
+            Swal.fire({
+                title: "Enter Password",
+                input: "password",
+                inputAttributes: {
+                    autocapitalize: "off",
+                    required: true
+                },
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return fetch("validate_password.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "password=" + encodeURIComponent(password)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.message || "Incorrect password.");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(error.message);
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ✅ Redirect to editrules page if confirmed and password is valid
+                    window.location.href = 'editrules.php?id=' + id;
+                }
+            });
+        }
+
+    </script>
+
 
 </body>
 
