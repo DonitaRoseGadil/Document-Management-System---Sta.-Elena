@@ -244,7 +244,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content" style="color: #000000">
                             <div class="modal-header">
-                                <h5 class="modal-title" style="color:#000000">ADD ACOUNT</h5>
+                                <h5 class="modal-title" style="color:#000000">ADD ACCOUNT</h5>
                                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                                 </button>
                             </div>
@@ -509,7 +509,7 @@
                         if (result.isConfirmed) {
                             Swal.fire({
                                 title: "Deleted!",
-                                text: "Acount has been deleted.",
+                                text: "Account has been deleted.",
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 2000
