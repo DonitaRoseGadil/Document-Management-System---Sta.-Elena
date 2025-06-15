@@ -1,4 +1,4 @@
- $('#generateReportBtn').on('click', function() {
+$('#generateReportBtn').on('click', function() {
             var start = $('#reportStartDate').val();
             var end = $('#reportEndDate').val();
             var all = $('#generateAllReports').is(':checked');
@@ -6,7 +6,7 @@
             if (!all && (!start || !end)) {
                 Swal.fire({
                     title: "Error!",
-                    text: "Please select a start and end date, or check 'Generate All Reports'.",
+                    text: "Please select a specific date range or check 'Generate All Reports'.",
                     icon: "error",
                     confirmButtonText: "OK"
                 });
@@ -23,4 +23,13 @@
                 return false; // Prevent form submission
             }
             $('#reportForm').submit();
+
+        
+});
+
+$('#generateAllReports').on('change', function() { 
+    if ($(this).is(':checked')) {
+        $('#reportStartDate').val('');
+        $('#reportEndDate').val('');
+    }
 });
