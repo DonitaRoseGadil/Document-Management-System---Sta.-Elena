@@ -139,16 +139,34 @@ while ($row = $result->fetch_assoc()) {
     // $remarks = mb_convert_encoding($row['remarks'], 'ISO-8859-1', 'UTF-8');
 
     // Calculate number of lines for MultiCell columns
+    $nb_reso = $pdf->NbLines($w[0], $reso_no);
     $nb_title = $pdf->NbLines($w[1], $title);
     $nb_author = $pdf->NbLines($w[2], $author);
     $nb_date = $pdf->NbLines($w[3], $date_approved);
-    $maxLines = max($nb_title, $nb_author, $nb_date, 1);
+    $maxLines = max($nb_reso,$nb_title, $nb_author, $nb_date, 1);
     $rowHeight = $lineHeight * $maxLines;
+
+    // Check for page break before rendering the row
+    $bottomMargin = 20; // You can tweak this if needed
+    if ($pdf->GetY() + $rowHeight > ($pdf->GetPageHeight() - $bottomMargin)) {
+        $pdf->AddPage('L', 'A4');
+        $pdf->Image($watermarkPath, $wmX, $wmY, $wmWidth, $wmHeight);
+
+        // Reprint the table header
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(34,8,'RESO NO./MO NO.',1 , 0,'C');
+        $pdf->Cell(160,8,'TITLE',1, 0,'C');
+        $pdf->Cell(45,8,'AUTHOR/SPONSOR',1, 0,'L');
+        $pdf->Cell(34,8,'DATE APPROVED',1, 0,'C');
+        $pdf->Ln();
+        $pdf->SetFont('Arial','',9);
+    }
 
     // Save current position
     $x = $pdf->GetX();
     $y = $pdf->GetY();
 
+  
     // Draw borders for all columns
     $pdf->Rect($x, $y, $w[0], $rowHeight); // RESO NO./MO NO.
     $pdf->Rect($x + $w[0], $y, $w[1], $rowHeight); // TITLE
@@ -158,7 +176,7 @@ while ($row = $result->fetch_assoc()) {
 
     // Print each cell
     $pdf->SetXY($x, $y);
-    $pdf->MultiCell($w[0], $rowHeight, $reso_no, 0, 'C');
+    $pdf->MultiCell($w[0], $lineHeight, $reso_no, 0, 'C');
     $pdf->SetXY($x + $w[0], $y);
     $pdf->MultiCell($w[1], $lineHeight, $title, 0, 'L');
     $pdf->SetXY($x + $w[0] + $w[1], $y);
@@ -178,5 +196,5 @@ if ($rowCount === 0) {
 }
 
 // Output PDF
-$pdf->Output('D', 'resolution_report.pdf');
+$pdf->Output('I', 'resolution_report.pdf');
 ?>
