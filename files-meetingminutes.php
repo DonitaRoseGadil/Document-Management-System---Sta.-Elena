@@ -54,15 +54,18 @@
                                 <div class="table-responsive">
                                     <table id="example" class="display" style="min-width: 845px; width: 100%;">
                                         <colgroup>
-                                            <col style="width: 25%;">
-                                            <col style="width: 20%;">
-                                            <col style="width: 40%;">
-                                            <col style="width: 25%;">
+                                            <col style="width: 15%;">
+                                            <col style="width: 10%;">
+                                            <col style="width: 15%;">
+                                            <col style="width: 35%;">
+                                            <col style="width: 15%;">
+                                            <col style="width: 10%;">
                                         </colgroup>
                                         <thead class="text-center" style="background-color: #098209; color: #FFFFFF;">
                                             <tr>
                                                 <th style="color: #FFFFFF;">NUMBER OF REGULAR SESSION</th>
                                                 <th style="color: #FFFFFF;">DATE</th>
+                                                <th style="color: #FFFFFF;">RESOLUTION NO. / MO NO.</th>
                                                 <th style="color: #FFFFFF;">TITLE</th>
                                                 <th style="color: #FFFFFF;">STATUS</th>
                                                 <th style="color: #FFFFFF;">ACTION</th>
@@ -85,6 +88,7 @@
                                                     <tr>
                                                         <td style="pointer-events: none; border-bottom: 1px solid #098209; border-left: 1px solid #098209;"><?php echo $row["no_regSession"] ?></td>
                                                         <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["date"]?></td>
+                                                        <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["resolutionNo"]?></td>
                                                         <td style="pointer-events: none; border-bottom: 1px solid #098209; white-space: pre-line;"><?php echo nl2br(htmlspecialchars($row["title"])); ?></td>
                                                         
                                                         <td style="pointer-events: none; border-bottom: 1px solid #098209; padding-top: 10px;">
