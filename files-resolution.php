@@ -41,7 +41,7 @@ ini_set('display_errors', 1);
 
                     <!-- Modal Header -->
                     <div class="modal-header" style="background-color: #098209; color:#FFFFFF; border: none;">
-                        <h5 class="modal-title text-white"><i class="fa fa-file"></i> Generate Leave Applications Report</h5>
+                        <h5 class="modal-title text-white"><i class="fa fa-file"></i> Generate Resolution Report</h5>
                         <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                     </div>
 
