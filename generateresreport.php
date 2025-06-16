@@ -10,10 +10,10 @@ $end = $_POST['reportEndDate'] ?? '';
 
 // Query data
 if ($all) {
-    $sql = "SELECT * FROM resolution ORDER BY d_approved ASC";
+    $sql = "SELECT * FROM resolution ORDER BY d_adopted ASC";
     $stmt = $conn->prepare($sql);
 } else {
-    $sql = "SELECT * FROM resolution WHERE d_approved BETWEEN ? AND ? ORDER BY d_approved ASC";
+    $sql = "SELECT * FROM resolution WHERE d_adopted BETWEEN ? AND ? ORDER BY d_adopted ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $start, $end);
 }
