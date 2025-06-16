@@ -22,10 +22,24 @@ $('#generateReportBtn').on('click', function() {
                 });
                 return false; // Prevent form submission
             }
+
+            if (all && start && end) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Please select either a specific date range or check 'Generate All Reports'.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+
+                $('#reportStartDate').val('');
+                $('#reportEndDate').val('');
+                $('#generateAllReports').prop('checked', false);
+                return false; // Prevent form submission
+                
+            }
             $('#reportForm').submit();
 
-        
-});
+        });
 
 $('#generateAllReports').on('change', function() { 
     if ($(this).is(':checked')) {
