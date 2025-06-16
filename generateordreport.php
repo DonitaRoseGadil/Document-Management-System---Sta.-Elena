@@ -10,10 +10,10 @@ $end = $_POST['reportEndDate'] ?? '';
 
 // Query data
 if ($all) {
-    $sql = "SELECT * FROM resolution ORDER BY d_adopted ASC";
+    $sql = "SELECT * FROM ordinance ORDER BY date_adopted ASC";
     $stmt = $conn->prepare($sql);
 } else {
-    $sql = "SELECT * FROM resolution WHERE d_adopted BETWEEN ? AND ? ORDER BY d_adopted ASC";
+    $sql = "SELECT * FROM ordinance WHERE date_adopted BETWEEN ? AND ? ORDER BY date_adopted ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $start, $end);
 }
@@ -102,7 +102,7 @@ $pdf->Cell(0, 5, 'Municipality of Sta. Elena', 0, 1, 'C');
 // Title
 $pdf->Ln(5);
 $pdf->SetFont('Times', 'B', 17);
-$pdf->Cell(0, 8, 'Resolution Report', 0, 1, 'C');
+$pdf->Cell(0, 8, 'Ordinance Report', 0, 1, 'C');
 $pdf->SetFont('Times', '', 12);
 
 
@@ -128,14 +128,14 @@ while ($row = $result->fetch_assoc()) {
     $w = [34, 160, 45, 34];
     $lineHeight = 6;
 
-    $reso_no = $row['reso_no'];
+    $reso_no = $row['mo_no'];
     $title = mb_convert_encoding($row['title'], 'ISO-8859-1', 'UTF-8');
     $author = mb_convert_encoding($row['author_sponsor'], 'ISO-8859-1', 'UTF-8');
-    if (!empty($row['d_approved']) && $row['d_approved'] !== '0000-00-00') {
-        $date_approved = date('F j, Y', strtotime($row['d_approved']));
-        } else {
-            $date_approved = 'No data';
-        }
+    if (!empty($row['sp_approval']) && $row['sp_approval'] !== '0000-00-00') {
+        $date_approved = date('F j, Y', strtotime($row['sp_approval']));
+    } else {
+        $date_approved = 'No data';
+    }
     // $remarks = mb_convert_encoding($row['remarks'], 'ISO-8859-1', 'UTF-8');
 
     // Calculate number of lines for MultiCell columns
@@ -196,5 +196,5 @@ if ($rowCount === 0) {
 }
 
 // Output PDF
-$pdf->Output('I', 'resolution_report.pdf');
+$pdf->Output('I', 'ordinance_report.pdf');
 ?>
