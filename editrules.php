@@ -19,11 +19,16 @@ if (isset($_POST['save'])) {
             $success = false;
         }
 
+        $log_sql = "INSERT INTO history_log (action, file_type, file_id, title) 
+        VALUES ('Edited', 'Rules', $sectionId, '$title')";
+        $conn->query($log_sql);
+
         // Delete old contents and subcontents
         if (!$conn->query("DELETE FROM subcontents WHERE content_id IN (SELECT id FROM contents WHERE section_id = $sectionId)") ||
             !$conn->query("DELETE FROM contents WHERE section_id = $sectionId")) {
             $success = false;
         }
+        
 
         // Insert updated contents and subcontents
         foreach ($contents as $index => $contentText) {

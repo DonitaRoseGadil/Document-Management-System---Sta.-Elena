@@ -41,6 +41,14 @@
                     }
                 }
             }
+            
+            // ✅ Only insert log after finishing all inserts for this section
+            $log_sql = "INSERT INTO history_log (action, file_type, file_id, title) VALUES ('Created', 'Rules', ?, ?)";
+            $log_stmt = $conn->prepare($log_sql);
+            $log_stmt->bind_param("is", $section_id, $title);
+            $log_stmt->execute();
+            $log_stmt->close();
+        }
 
             if ($stmt) {
                 echo "<script>
@@ -75,8 +83,6 @@
             $stmt->close();
             $conn->close();
         }
-
-    }
 ?>
 
 <!DOCTYPE html>
