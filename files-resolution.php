@@ -37,54 +37,54 @@ ini_set('display_errors', 1);
         <!-- Report Modal -->
         <div class="modal fade" id="reportModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+                <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header" style="background-color: #098209; color:#FFFFFF; border: none;">
-                    <h5 class="modal-title text-white"><i class="fa fa-file"></i> Generate Leave Applications Report</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
+                    <!-- Modal Header -->
+                    <div class="modal-header" style="background-color: #098209; color:#FFFFFF; border: none;">
+                        <h5 class="modal-title text-white"><i class="fa fa-file"></i> Generate Leave Applications Report</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    </div>
 
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <form id="reportForm" action="generateresreport.php" enctype="multipart/form-data" method="POST">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
-                                <input type="date" id="reportStartDate" name="reportStartDate" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label><i class="fas fa-calendar-alt"></i> End Date:</label>
-                                <input type="date" id="reportEndDate" name="reportEndDate" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <!-- Add the "All Reports" checkbox -->
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="generateAllReports" name="generateAllReports" value="on">
-                                <label class="form-check-label" for="generateAllReports">
-                                     Generate All Reports (ignores date range)
-                                </label>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <form id="reportForm" action="generateresreport.php" enctype="multipart/form-data" method="POST">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
+                                    <input type="date" id="reportStartDate" name="reportStartDate" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-calendar-alt"></i> End Date:</label>
+                                    <input type="date" id="reportEndDate" name="reportEndDate" class="form-control" required>
                                 </div>
                             </div>
-                        </div>
 
-                    </form>
+                            <!-- Add the "All Reports" checkbox -->
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="generateAllReports" name="generateAllReports" value="on">
+                                        <label class="form-check-label" for="generateAllReports">
+                                            Generate All Reports (ignores date range)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Close
+                        </button>
+                        <button type="button" id="generateReportBtn" class="btn btn-success text-white">
+                            <i class="fa fa-file"></i> Generate Report
+                        </button>
+                    </div>
+
                 </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                    <i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" id="generateReportBtn" class="btn btn-success text-white">
-                    <i class="fa fa-file"></i> Generate Report
-                </button>
-                </div>
-
-            </div>
             </div>
         </div>
 
