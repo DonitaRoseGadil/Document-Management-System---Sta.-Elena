@@ -7,6 +7,7 @@ if(isset($_POST['save'])){
     $id = intval($_POST['id']);
     $resoNo = mysqli_real_escape_string($conn, $_POST['resoNo']);
     $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $barangay = mysqli_real_escape_string($conn, $_POST['barangay']);
     $dateAdopted = mysqli_real_escape_string($conn, $_POST['dateAdopted']);
     $authorSponsor = mysqli_real_escape_string($conn, $_POST['authorSponsor']);
     $coAuthor = mysqli_real_escape_string($conn, $_POST['coAuthor']);
@@ -33,7 +34,8 @@ if(isset($_POST['save'])){
     }
     $sql = "UPDATE `resolution` SET 
                     `reso_no`='$resoNo', 
-                    `title`='$title', 
+                    `title`='$title',
+                    `brgy`='$barangay',
                     `d_adopted`='$dateAdopted', 
                     `author_sponsor`='$authorSponsor', 
                     `co_author`='$coAuthor', 
@@ -210,6 +212,12 @@ if(isset($_POST['save'])){
                                             <label class="col-sm-3 col-form-label" style="color:#000000">Title:</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" id="title" name="title" rows="1" style="resize: none; overflow: hidden;"><?php echo htmlspecialchars_decode($row['title']); ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" style="color:#000000">Barangay:</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="<?php echo $row['brgy']?>" id="barangay" name="barangay">
                                             </div>
                                         </div>
                                         <div class="form-group row">
