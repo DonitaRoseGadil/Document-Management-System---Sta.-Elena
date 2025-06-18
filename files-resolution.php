@@ -59,6 +59,23 @@ ini_set('display_errors', 1);
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-calendar-alt"></i> Barangay:</label>
+                                    <select id="reportBarangay" name="reportBarangay" class="form-control" required>
+                                        <option value="">-- Select Barangay --</option>
+                                        <?php
+                                        include "connect.php";
+                                        $brgy_query = $conn->query("SELECT DISTINCT brgy FROM resolution WHERE brgy IS NOT NULL AND brgy != '' ORDER BY brgy ASC");
+                                        while ($b = $brgy_query->fetch_assoc()) {
+                                            echo '<option value="' . htmlspecialchars($b['brgy']) . '">' . htmlspecialchars($b['brgy']) . '</option>';
+                                        }
+                                        ?>
+                                        <option value ="all">All Barangays</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Add the "All Reports" checkbox -->
                             <div class="row mb-3">
                                 <div class="col-md-12">

@@ -7,12 +7,25 @@ include "connect.php";
 $all = isset($_POST['generateAllReports']) && $_POST['generateAllReports'] === 'on';
 $start = $_POST['reportStartDate'] ?? '';
 $end = $_POST['reportEndDate'] ?? '';
+$barangay = $_POST['reportBarangay'] ?? '';
 
 // Query data
-if ($all) {
+if ($all && empty($barangay)) {
+    // All records, all barangays
     $sql = "SELECT * FROM resolution ORDER BY d_adopted ASC";
     $stmt = $conn->prepare($sql);
+} elseif ($all && !empty($barangay)) {
+    // All records, specific barangay
+    $sql = "SELECT * FROM resolution WHERE brgy = ? ORDER BY d_adopted ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $barangay);
+} elseif (!$all && !empty($barangay)) {
+    // Date range, specific barangay
+    $sql = "SELECT * FROM resolution WHERE d_adopted BETWEEN ? AND ? AND brgy = ? ORDER BY d_adopted ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sss", $start, $end, $barangay);
 } else {
+    // Date range, all barangays
     $sql = "SELECT * FROM resolution WHERE d_adopted BETWEEN ? AND ? ORDER BY d_adopted ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $start, $end);
@@ -108,9 +121,11 @@ $pdf->SetFont('Times', '', 12);
 
 if (!$all) {
     $pdf->Cell(0,10,"Date Range: " . date("F j, Y", strtotime($start)) . " - " . date("F j, Y", strtotime($end)), 0, 1, 'C');
+    
 } else {
     $pdf->Cell(0,10,"All Records",0,1,'C');
 }
+$pdf->Cell(0, 5, "Barangay: " . (!empty($barangay) ? $barangay : "All Barangay"), 0, 1, 'C');
 $pdf->Ln(5);
 
 // Table header
