@@ -34,6 +34,7 @@
 
                                             $resoNo = $_POST['resoNo'];
                                             $title = $_POST['title'];
+                                            $barangay = $_POST['barangay'];
                                             $dateAdopted = $_POST['dateAdopted'];
                                             $authorSponsor = $_POST['authorSponsor'];
                                             $coAuthor = $_POST['coAuthor'];
@@ -69,11 +70,11 @@
                                                     </script>";
                                             } else {
                                                 // Insert new resolution
-                                                $sql = "INSERT INTO resolution (reso_no, title, d_adopted, author_sponsor, co_author, remarks, d_forward, d_signed, sp_resoNo, d_approved, attachment, notes) 
-                                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                                $sql = "INSERT INTO resolution (reso_no, title, brgy, d_adopted, author_sponsor, co_author, remarks, d_forward, d_signed, sp_resoNo, d_approved, attachment, notes) 
+                                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                                                 
                                                 $stmt = $conn->prepare($sql);
-                                                $stmt->bind_param("ssssssssssss", $resoNo, $title, $dateAdopted, $authorSponsor, $coAuthor, $remarks, $dateForwarded, $dateSigned, $spResoNo, $dateApproved, $attachmentPath, $notes);
+                                                $stmt->bind_param("sssssssssssss", $resoNo, $title, $barangay, $dateAdopted, $authorSponsor, $coAuthor, $remarks, $dateForwarded, $dateSigned, $spResoNo, $dateApproved, $attachmentPath, $notes);
 
                                                 if ($stmt->execute()) {
                                                     $last_id = $conn->insert_id;
@@ -125,6 +126,12 @@
                                                 <textarea class="form-control dynamic-textarea" style="resize: none; overflow: hidden;" rows="1" placeholder="Please type here..." id="title" name="title"></textarea>
                                              </div>
                                         </div>
+                                          <div class="form-group row">
+                                             <label class="col-sm-3 col-form-label" style="color:#000000">Barangay:</label>
+                                             <div class="col-sm-9">
+                                                <textarea class="form-control dynamic-textarea" style="resize: none; overflow: hidden;" rows="1" placeholder="Please type here..." id="barangay" name="barangay"></textarea>
+                                                        </div>
+                                                    </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" style="color:#000000;">Date Adopted:</label>
                                             <div class="col-sm-9">
@@ -483,7 +490,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("form");
-        const requiredFields = ["resoNo", "title", "dateAdopted", "authorSponsor"];
+        const requiredFields = ["resoNo", "title", "barangay", "dateAdopted", "authorSponsor"];
 
         function validateField(field) {
             let inputElement = document.getElementById(field);
