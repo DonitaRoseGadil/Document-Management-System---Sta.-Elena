@@ -40,6 +40,9 @@
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#minutes" style="color: #000000">Order of Business</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#rules" style="color: #000000">Rules and Regulations</a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <!--Resolution-->
@@ -211,6 +214,64 @@
                                                                             ?>
                                                                         </td>
                                                                         <td class="text-center"><?php echo $row['status']; ?></td>
+                                                                        <td class="text-center"><?php echo date('F j, Y \a\t h:i A', strtotime($row['timestamp'])); ?></td>
+                                                                    </tr>   
+                                                                    <?php
+                                                                }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="rules">
+                                            <div class="pt-4">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-responsive-sm">
+                                                        <colgroup>
+                                                            <col style="width: 70%;">
+                                                            <col style="width: 15%;">
+                                                            <col style="width: 15%;">
+                                                        </colgroup>
+                                                        <thead class="text-center" style="background-color: #098209; color: #FFFFFF;">
+                                                            <tr>
+                                                                <th>TITLE</th>
+                                                                <th>ACTION TAKEN</th>
+                                                                <th>TIMESTAMP</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody style="color: #000000;">
+                                                            <?php 
+                                                                include "connect.php";
+                                                                $sql = "SELECT title, action, timestamp FROM history_log WHERE file_type = 'Rules' ORDER BY timestamp DESC LIMIT 100";
+                                                                $stmt = $conn->prepare($sql);
+                                                                $stmt->execute();
+                                                                $result = $stmt->get_result();
+                                                                if (!$result) {
+                                                                    die("SQL Error: " . $conn->error);
+                                                                }
+
+                                                                while ($row = mysqli_fetch_assoc($result)) {
+                                                                    ?>
+                                                                    <tr>
+                                                                        <td><?php echo $row['title']; ?></td>
+                                                                        <td class="text-center fs-4">
+                                                                            <?php 
+                                                                                switch ($row['action']) {
+                                                                                    case 'Created':
+                                                                                        echo '<span class="badge badge-success">Created</span>';
+                                                                                        break;
+                                                                                    case 'Edited':
+                                                                                        echo '<span class="badge badge-primary">Edited</span>';
+                                                                                        break;
+                                                                                    case 'Deleted':
+                                                                                        echo '<span class="badge badge-danger">Deleted</span>';
+                                                                                        break;
+                                                                                    default:
+                                                                                        echo $row['action']; // fallback if action is not recognized
+                                                                                }
+                                                                            ?>
+                                                                        </td>
                                                                         <td class="text-center"><?php echo date('F j, Y \a\t h:i A', strtotime($row['timestamp'])); ?></td>
                                                                     </tr>   
                                                                     <?php

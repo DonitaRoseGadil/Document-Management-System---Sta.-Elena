@@ -1,7 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
     
-    <?php include('header.php'); ?>
+    <?php include('header.php'); 
+        date_default_timezone_set('Asia/Manila');
+
+        $lastUpdatedText = "No updates yet";
+
+        // Fetch the last updated timestamp for any Rules history
+        $sql = "SELECT timestamp FROM history_log WHERE file_type = 'Rules' ORDER BY timestamp DESC LIMIT 1";
+        $result = $conn->query($sql);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $lastUpdated = strtotime($row["timestamp"]); // Convert to Unix timestamp
+            $currentDate = date("Y-m-d"); // Get today's date
+            $updatedDate = date("Y-m-d", $lastUpdated); // Get last updated date
+
+            if ($currentDate === $updatedDate) {
+                // If updated today, show "Today at [time]"
+                $lastUpdatedText = "Last updated today at " . date("g:i A", $lastUpdated);
+            } else {
+                // Show full date and time if not today
+                $lastUpdatedText = "Last updated on " . date("F j, Y \\a\\t g:i A", $lastUpdated);
+            }
+        }
+
+        $conn->close();
+        ?>
 
 <body>
 
@@ -115,12 +140,11 @@
                                                     <?php endforeach; ?>
                                                 <?php endforeach; ?>
                                                 <div class="content-footer d-flex justify-content-between align-items-center mt-3" style="margin: 0px 20px 0px 20px;">
-                                                    <p class="card-text text-gray d-inline" style="margin-bottom: 10px">Last updated on May 27, 2025 at 11:19 AM</p>
+                                                    <p class="card-text text-gray d-inline" style="margin-bottom: 10px"></p>
                                                     <div style="margin-bottom: 10px">
                                                         <a href="javascript:void(0)" onclick="confirmEdit(<?= $sectionId ?>)" class="card-link text-primary me-3">EDIT</a>
                                                         <p class="card-text text-gray d-inline">|</p>
                                                         <a href="javascript:void(0)" class="card-link text-danger delete-btn" data-id="<?= $sectionId ?>">DELETE</a>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -129,7 +153,42 @@
                                     <?php endif; ?>
                                 </div>
                             </div>
+                            <!-- View History Button -->
+                            <div class="card-footer d-sm-flex justify-content-between">
+                                <div class="card-footer-link mb-4 mb-sm-0">
+                                    <p class="card-text text-dark d-inline"><?php echo $lastUpdatedText; ?></p>
+                                </div>
+                                <button type="button" class="btn text-white" style="background-color: #098209;" data-toggle="modal" data-target="#historyModal" onclick="loadHistory('Rules')">View History</button>
+                            </div>
 
+                            <!-- Modal for Viewing History -->
+                            <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true d-flex justify-content center">
+                                <div class="modal-dialog modal-l modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="historyModalLabel">File History</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body d-flex justify-content-center">
+                                            <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th style="color: #000000; font-weight:bold; text-align: center;">Rule Modified</th>
+                                                <th style="color: #000000; font-weight:bold; text-align: center;">Action</th>
+                                                <th style="color: #000000; font-weight:bold; text-align: center;">Timestamp</th>
+                                                <?php if ($role === 'master') { ?>
+                                                <th style="color: #000000; font-weight:bold; text-align: center;"></th>
+                                                <?php } ?>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="historyTableBody">
+                                            <tr><td colspan="4">Loading history...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>                        
@@ -273,6 +332,115 @@
         }
 
     </script>
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const userRole = "<?php echo $role; ?>";
+
+    window.loadHistory = function (fileType, fileId = null) {
+        let url = `fetch_history.php?file_type=${encodeURIComponent(fileType)}`;
+        if (fileType !== 'Rules' && fileId) {
+            url += `&id=${encodeURIComponent(fileId)}`;
+        }
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let historyHtml = "";
+
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(log => {
+                        historyHtml += `<tr id="history-row-${log.id}">
+                                            <td style="color: #000000;">${log.title}</td>
+                                            <td style="color: #000000;">${log.action}</td>
+                                            <td style="color: #000000;">${log.timestamp}</td>`;
+
+                        if (userRole === 'master') {
+                            historyHtml += `<td style="text-align: center;">
+                                                <a onclick="confirmDelete(${log.id})" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center p-2" title="Delete">
+                                                    <i class="fa fa-trash" aria-hidden="true" style="color: #FFFFFF;"></i>
+                                                </a>
+                                            </td>`;
+                        }
+
+                        historyHtml += `</tr>`;
+                    });
+                } else {
+                    historyHtml = "<tr><td colspan='4' class='text-center'>No history found.</td></tr>";
+                }
+
+                document.getElementById("historyTableBody").innerHTML = historyHtml;
+            })
+            .catch(error => {
+                console.error("Error fetching history:", error);
+                document.getElementById("historyTableBody").innerHTML = "<tr><td colspan='4' class='text-center'>Error loading history.</td></tr>";
+            });
+    };
+
+
+        // When the modal is shown, load the history table
+        $('#historyModal').on('show.bs.modal', loadHistory);
+
+        // Delete function
+        window.confirmDeleteHistory = function (id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('deleteHistory.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'id=' + encodeURIComponent(id)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The history item has been deleted.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+                            setTimeout(() => {
+                                if ($('#historyModal').hasClass('show')) {
+                                    loadHistory(); // Refresh modal content
+                                } else {
+                                    location.reload();
+                                }
+                            }, 1600);
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Error deleting: ' + (data.error || "Unknown error"),
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Delete error:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Server Error',
+                            text: 'Server error while deleting.',
+                        });
+                    });
+                }
+            });
+        };
+    });
+    </script>
+
 
 
 </body>
