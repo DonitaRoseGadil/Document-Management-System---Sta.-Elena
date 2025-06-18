@@ -99,11 +99,18 @@ $conn->close();
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" style="color:#000000">Barangay:</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" value="<?php echo $row['brgy']?>" id="barangay" name="barangay" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" style="color:#000000">Date Adopted:</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control" value="<?php echo $row['d_adopted']?>" id="dateAdopted" name="dateAdopted" disabled>
                                             </div>
                                         </div>
+                                      
                                         <!-- <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" style="color:#000000">Description:</label>
                                             <div class="col-sm-9">
