@@ -61,6 +61,35 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label><i class="fas fa-calendar-alt"></i> Barangay:</label>
+                                    <select id="reportBarangay" name="reportBarangay" class="form-control" required>
+                                        <option value="">-- Select Barangay --</option>
+                                        <option value="Basiad">Basiad</option>
+                                        <option value="Bulala">Bulala</option>
+                                        <option value="Don Tomas">Don Tomas</option>
+                                        <option value="Guitol">Guitol</option>
+                                        <option value="Kabuluan">Kabuluan</option>
+                                        <option value="Kagtalaba">Kagtalaba</option>
+                                        <option value="Maulawin">Maulawin</option>
+                                        <option value="Patag Ibaba">Patag Ibaba</option>
+                                        <option value="Patag Ilaya">Patag Ilaya</option>
+                                        <option value="Plaridel">Plaridel</option>
+                                        <option value="Polangguitguit">Polangguitguit</option>
+                                        <option value="Rizal">Rizal</option>
+                                        <option value="Salvacion">Salvacion</option>
+                                        <option value="San Lorenzo">San Lorenzo</option>
+                                        <option value="San Pedro">San Pedro</option>
+                                        <option value="San Vicente">San Vicente</option>
+                                        <option value="Santa Elena (Pob.)">Santa Elena (Pob.)</option>
+                                        <option value="Tabugon">Tabugon</option>
+                                        <option value="Villa San Isidro">Villa San Isidro</option>
+                                        <option value ="all">All Barangays</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- Add the "All Reports" checkbox -->
                             <div class="row mb-3">
                                 <div class="col-md-12">

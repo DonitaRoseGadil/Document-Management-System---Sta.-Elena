@@ -7,6 +7,7 @@ if(isset($_POST['save'])){
     $id = intval($_POST['id']);
     $moNo = mysqli_real_escape_string($conn, $_POST['moNo']);
     $title = mysqli_real_escape_string($conn, $_POST['title']);
+     $barangay = mysqli_real_escape_string($conn, $_POST['barangay']);
     $dateAdopted = mysqli_real_escape_string($conn, $_POST['dateAdopted']);
     $authorSponsor = mysqli_real_escape_string($conn, $_POST['authorSponsor']);
     $remarks = mysqli_real_escape_string($conn, $_POST['remarks']);
@@ -33,6 +34,7 @@ if(isset($_POST['save'])){
     $sql = "UPDATE `ordinance` SET 
                     `mo_no`='$moNo', 
                     `title`='$title', 
+                    `brgy`='$barangay',
                     `date_adopted`='$dateAdopted', 
                     `author_sponsor`='$authorSponsor', 
                     `date_fwd`='$dateForwarded',
@@ -208,6 +210,33 @@ if(isset($_POST['save'])){
                                             <label class="col-sm-3 col-form-label" style="color:#000000">Title:</label>
                                             <div class="col-sm-9">
                                                 <textarea class="form-control" id="title" name="title" rows="1" style="resize: none; overflow: hidden;"><?php echo htmlspecialchars_decode($row['title']); ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label" style="color:#000000">Barangay:</label>
+                                            <div class="col-sm-9">
+                                                <select id="barangay" name="barangay" class="form-control" required>
+                                                    <option value="" <?php if($row['brgy'] == '') echo 'selected'; ?>>Choose Barangay...</option>
+                                                    <option value="Basiad" <?php if($row['brgy'] == 'Basiad') echo 'selected'; ?>>Basiad</option>
+                                                    <option value="Bulala" <?php if($row['brgy'] == 'Bulala') echo 'selected'; ?>>Bulala</option>
+                                                    <option value="Don Tomas" <?php if($row['brgy'] == 'Don Tomas') echo 'selected'; ?>>Don Tomas</option>
+                                                    <option value="Guitol" <?php if($row['brgy'] == 'Guitol') echo 'selected'; ?>>Guitol</option>
+                                                    <option value="Kabuluan" <?php if($row['brgy'] == 'Kabuluan') echo 'selected'; ?>>Kabuluan</option>
+                                                    <option value="Kagtalaba" <?php if($row['brgy'] == 'Kagtalaba') echo 'selected'; ?>>Kagtalaba</option>
+                                                    <option value="Maulawin" <?php if($row['brgy'] == 'Maulawin') echo 'selected'; ?>>Maulawin</option>
+                                                    <option value="Patag Ibaba" <?php if($row['brgy'] == 'Patag Ibaba') echo 'selected'; ?>>Patag Ibaba</option>
+                                                    <option value="Patag Ilaya" <?php if($row['brgy'] == 'Patag Ilaya') echo 'selected'; ?>>Patag Ilaya</option>
+                                                    <option value="Plaridel" <?php if($row['brgy'] == 'Plaridel') echo 'selected'; ?>>Plaridel</option>
+                                                    <option value="Polangguitguit" <?php if($row['brgy'] == 'Polangguitguit') echo 'selected'; ?>>Polangguitguit</option>
+                                                    <option value="Rizal" <?php if($row['brgy'] == 'Rizal') echo 'selected'; ?>>Rizal</option>
+                                                    <option value="Salvacion" <?php if($row['brgy'] == 'Salvacion') echo 'selected'; ?>>Salvacion</option>
+                                                    <option value="San Lorenzo" <?php if($row['brgy'] == 'San Lorenzo') echo 'selected'; ?>>San Lorenzo</option>
+                                                    <option value="San Pedro" <?php if($row['brgy'] == 'San Pedro') echo 'selected'; ?>>San Pedro</option>
+                                                    <option value="San Vicente" <?php if($row['brgy'] == 'San Vicente') echo 'selected'; ?>>San Vicente</option>
+                                                    <option value="Santa Elena (Pob.)" <?php if($row['brgy'] == 'Santa Elena (Pob.)') echo 'selected'; ?>>Santa Elena (Pob.)</option>
+                                                    <option value="Tabugon" <?php if($row['brgy'] == 'Tabugon') echo 'selected'; ?>>Tabugon</option>
+                                                    <option value="Villa San Isidro" <?php if($row['brgy'] == 'Villa San Isidro') echo 'selected'; ?>>Villa San Isidro</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">

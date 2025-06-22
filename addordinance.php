@@ -100,6 +100,7 @@
 
                                             $moNo = $_POST['moNo'];
                                             $title = $_POST['title'];
+                                            $barangay = $_POST['barangay'];
                                             $dateAdopted = $_POST['dateAdopted'];
                                             $authorSponsor = $_POST['authorSponsor'];
                                             $remarks = $_POST['remarks'];
@@ -136,11 +137,11 @@
                                             } else {
 
                                                 //Insert new ordinance
-                                                $sql = "INSERT INTO `ordinance`(`mo_no`, `title`, `date_adopted`, `author_sponsor`, `remarks`, `notes`, `date_fwd`, `date_signed`, `sp_resoNo`, `sp_approval`, `attachment`) 
-                                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                                $sql = "INSERT INTO `ordinance`(`mo_no`, `title`,`brgy`,`date_adopted`, `author_sponsor`, `remarks`, `notes`, `date_fwd`, `date_signed`, `sp_resoNo`, `sp_approval`, `attachment`) 
+                                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                                             $stmt = $conn->prepare($sql);
-                                            $stmt->bind_param("sssssssssss", $moNo, $title, $dateAdopted, $authorSponsor, $remarks, $notes, $dateForwarded, $dateSigned, $spResoNo, $dateApproved, $attachmentPath);
+                                            $stmt->bind_param("ssssssssssss", $moNo, $title, $barangay, $dateAdopted, $authorSponsor, $remarks, $notes, $dateForwarded, $dateSigned, $spResoNo, $dateApproved, $attachmentPath);
 
                                                 if ($stmt->execute()) {
                                                     $last_id = $conn->insert_id;
@@ -188,6 +189,33 @@
                                              <label class="col-sm-3 col-form-label" style="color:#000000">Title:</label>
                                              <div class="col-sm-9">
                                                 <textarea class="form-control dynamic-textarea" style="resize: none; overflow: hidden;" rows="1" placeholder="Please type here..." id="title" name="title"></textarea>
+                                             </div>
+                                        </div>
+                                        <div class="form-group row">
+                                             <label class="col-sm-3 col-form-label" style="color:#000000">Barangay:</label>
+                                             <div class="col-sm-9">
+                                                <select id="barangay" name="barangay" class="form-control" required>
+                                                    <option value="" selected>Choose Barangay...</option>
+                                                    <option value="Basiad">Basiad</option>
+                                                    <option value="Bulala">Bulala</option>
+                                                    <option value="Don Tomas">Don Tomas</option>
+                                                    <option value="Guitol">Guitol</option>
+                                                    <option value="Kabuluan">Kabuluan</option>
+                                                    <option value="Kagtalaba">Kagtalaba</option>
+                                                    <option value="Maulawin">Maulawin</option>
+                                                    <option value="Patag Ibaba">Patag Ibaba</option>
+                                                    <option value="Patag Ilaya">Patag Ilaya</option>
+                                                    <option value="Plaridel">Plaridel</option>
+                                                    <option value="Polangguitguit">Polangguitguit</option>
+                                                    <option value="Rizal">Rizal</option>
+                                                    <option value="Salvacion">Salvacion</option>
+                                                    <option value="San Lorenzo">San Lorenzo</option>
+                                                    <option value="San Pedro">San Pedro</option>
+                                                    <option value="San Vicente">San Vicente</option>
+                                                    <option value="Santa Elena (Pob.)">Santa Elena (Pob.)</option>
+                                                    <option value="Tabugon">Tabugon</option>
+                                                    <option value="Villa San Isidro">Villa San Isidro</option>
+                                                </select>
                                              </div>
                                         </div>
                                         <div class="form-group row">

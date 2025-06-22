@@ -7,12 +7,25 @@ include "connect.php";
 $all = isset($_POST['generateAllReports']) && $_POST['generateAllReports'] === 'on';
 $start = $_POST['reportStartDate'] ?? '';
 $end = $_POST['reportEndDate'] ?? '';
+$barangay = $_POST['reportBarangay'] ?? '';
 
 // Query data
-if ($all) {
+if ($all && empty($barangay)) {
+    // All records, all barangays
     $sql = "SELECT * FROM ordinance ORDER BY date_adopted ASC";
     $stmt = $conn->prepare($sql);
+} elseif ($all && !empty($barangay)) {
+    // All records, specific barangay
+    $sql = "SELECT * FROM ordinance WHERE brgy = ? ORDER BY date_adopted ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $barangay);
+} elseif (!$all && !empty($barangay)) {
+    // Date range, specific barangay
+    $sql = "SELECT * FROM ordinance WHERE date_adopted BETWEEN ? AND ? AND brgy = ? ORDER BY date_adopted ASC";
+    $stmt = $conn->prepare(query: $sql);
+    $stmt->bind_param("sss", $start, $end, $barangay);
 } else {
+    // Date range, all barangays
     $sql = "SELECT * FROM ordinance WHERE date_adopted BETWEEN ? AND ? ORDER BY date_adopted ASC";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $start, $end);
@@ -111,7 +124,9 @@ if (!$all) {
 } else {
     $pdf->Cell(0,10,"All Records",0,1,'C');
 }
+$pdf->Cell(0, 5, "Barangay: " . (!empty($barangay) ? $barangay : "All Barangay"), 0, 1, 'C');
 $pdf->Ln(5);
+
 
 // Table header
 $pdf->SetFont('Arial','B',10);
