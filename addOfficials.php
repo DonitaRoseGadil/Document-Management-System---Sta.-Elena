@@ -470,7 +470,7 @@
             textarea.style.height = textarea.scrollHeight + "px"; 
         }
 
-         document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
             const textarea = document.getElementById("address");
             textarea.addEventListener("input", autoExpand);
         });
