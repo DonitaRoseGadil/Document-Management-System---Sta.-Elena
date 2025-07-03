@@ -59,38 +59,38 @@
                                     include "connect.php"; 
                                     $sql = "SELECT id, name, cmteDescription, cmteImage FROM committee";
                                     $result = $conn->query($sql);
-                                
                                 ?>
-                                <div class="row" >
+                                <div class="row g-3 d-flex align-items-stretch">
                                     <?php while ($row = $result->fetch_assoc()) { ?>
-                                    <div class="col-xl-6 col-xxl-6 col-lg-6 col-sm-6 mx-auto">
-                                        <div class="card mb-3" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.75);">
-                                            <div class="card-header">
-                                                <h5 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <p class="card-text" style="color:#000000; white-space: pre-wrap;"><?php 
-                                                    $desc = htmlspecialchars($row['cmteDescription']);
-                                                    $desc = strlen($desc) > 150 ? substr($desc, 0, 150) . '...' : $desc;
-                                                    echo nl2br($desc);
-                                                ?></p>
-                                            </div>
-                                            <img class="card-img-bottom img-fluid" src="<?php echo htmlspecialchars($row['cmteImage']) ?>" alt="Card image" style="max-height: 200px; object-fit: cover;">
-                                            <div class="card-footer">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex gap-2">
-                                                        <a href="editCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm p-2 mr-2">
-                                                            <i class="fa fa-edit" style="color: #ffffff;"></i>
-                                                        </a>
-                                                        <a href="deleteCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm p-2">
-                                                            <i class="fa fa-trash" style="color: #ffffff;"></i> 
+                                        <div class="col-xl-6 col-xxl-6 col-lg-6 col-sm-6 d-flex">
+                                             <div class="card mb-3 flex-fill d-flex flex-column" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.75);">
+                                                <div class="card-header">
+                                                    <h5 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h5>
+                                                </div>
+                                                <div class="card-body" style="color:#000000">
+                                                    <?php echo nl2br(htmlspecialchars($row['cmteDescription'])); ?>
+                                                </div>
+                                                <img class="card-img-bottom img-fluid" src="<?php echo htmlspecialchars($row['cmteImage']) ?>" alt="Card image" style="max-height: 150px; object-fit: cover;">
+                                                <div class="card-footer">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="d-flex gap-2">
+                                                            <a href="editCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm p-2 mr-2">
+                                                                <i class="fa fa-edit" style="color: #ffffff;"></i>
+                                                            </a>
+                                                            <a href="deleteCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm p-2">
+                                                                <i class="fa fa-trash" style="color: #ffffff;"></i> 
+                                                            </a>
+                                                        </div>
+                                                        <a href="viewCommittee.php?id=<?php echo $row['id']; ?>" 
+                                                            style="color: #808080;" 
+                                                            onmouseover="this.style.color='#098209';" 
+                                                            onmouseout="this.style.color='#808080';">
+                                                            View Members &nbsp; <i class="fa fa-arrow-right"></i>
                                                         </a>
                                                     </div>
-                                                    <a href="viewCommittee.php?id=<?php echo $row['id']; ?>"> View</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     <?php } ?>
                                 </div>
                             </div>
