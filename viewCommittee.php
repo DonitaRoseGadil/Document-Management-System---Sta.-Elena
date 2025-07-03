@@ -103,7 +103,7 @@
                     <div class="col-xl-8 col-xxl-12 items-center">                        
                         <div class="card" style="align-self: center;">
                             <div class="card-header d-flex justify-content-center">
-                                <h4 class="card-title text-center" style="color: #098209; ">ADD COMMITTEE</h4>
+                                <h4 class="card-title text-center" style="color: #098209; ">VIEW COMMITTEE</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
@@ -135,10 +135,6 @@
                                             <div class="input-group-append">
                                                 <button class="btn btn-danger" type="button" onclick="removeFile()"><i class="fa fa-close"></i></button>
                                             </div>
-                                        </div>
-                                        <div class="form-group row d-flex justify-content-center mt-5">
-                                            <button type="submit" class="btn btn-primary" id="save_btn" name="save" value="Save Data" style="background-color: #098209; border: none; width: 100px; color: #FFFFFF;">Save</button>
-                                            <a href="#" class="btn btn-danger ml-2" id="cancel_btn" name="cancel" value="Cancel" data-href="listOfCommittee.php" style="background-color: red; border: none; width: 100px; color: #FFFFFF;">Cancel</a>
                                         </div>
                                     </form>
                                 </div>
