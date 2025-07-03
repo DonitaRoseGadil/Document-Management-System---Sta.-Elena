@@ -74,7 +74,7 @@
                                                 <div class="card-footer">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div class="d-flex gap-2">
-                                                            <a href="editCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm p-2 mr-2">
+                                                            <a onclick="confirmEdit(<?php echo $row['id']; ?>)" class="btn btn-success btn-sm p-2 mr-2">
                                                                 <i class="fa fa-edit" style="color: #ffffff;"></i>
                                                             </a>
                                                             <a onclick="confirmDelete(<?php echo $row['id']; ?>)" class="btn btn-danger btn-sm p-2">
@@ -172,6 +172,46 @@
                 }
             });
         }
+    </script>
+
+    <script>
+        function confirmEdit(id) {
+            Swal.fire({
+                title: "Enter Password",
+                input: "password",
+                inputAttributes: {
+                    autocapitalize: "off",
+                    required: true
+                },
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return fetch("validate_password.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "password=" + encodeURIComponent(password)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.message || "Incorrect password.");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(error.message);
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'editCommittee.php?id=' + id;
+                }
+            });
+        }
+        
     </script>
 
 </body>
