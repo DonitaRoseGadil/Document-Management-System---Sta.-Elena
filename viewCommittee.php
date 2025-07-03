@@ -1,143 +1,65 @@
-<?php
-    if(isset($_POST['save'])){
-        include "connect.php";
-        error_reporting(0);
-
-        $committeeName = $_POST['committeeName'];
-        $committeeDescription = $_POST['committeeDescription'];
-
-        // Handle image upload
-        $photo_path = "";
-        if (!empty($_FILES['committeeImg']['name'])) {
-            $targetDir = "images/committee/";
-            $imageFileType = strtolower(pathinfo($_FILES['committeeImg']['name'], PATHINFO_EXTENSION));
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
-
-            if (in_array($imageFileType, $allowedTypes)) {
-                $newFileName = uniqid() . '.' . $imageFileType; // avoid file name collisions
-                $photo_path = $targetDir . $newFileName;
-                move_uploaded_file($_FILES['committeeImg']['tmp_name'], $photo_path);
-            } else {
-                echo "<script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Invalid File Type',
-                            text: 'Please upload a valid image (JPG, PNG, or GIF).'
-                        });
-                    </script>";
-                exit;
-            }
-        }
-
-
-        // Insert into database
-        $sql = "INSERT INTO committee (name, cmteDescription, cmteImage) 
-                VALUES (?, ?, ?)";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $committeeName, $committeeDescription, $photo_path);
-        $stmt->execute();
-    
-
-        if ($stmt) {
-            echo "<script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Committee Created',
-                            text: 'The committee has been successfully created.',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = 'listOfCommittee.php';
-                            }
-                        });
-                    });
-                  </script>";    
-        } else {
-            echo "<script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'There was an error creating the committee.',
-                            confirmButtonText: 'OK'
-                        });
-                    });
-                  </script>";
-            header("Location: listOfCommittee.php");
-            exit;    
-        }
-
-        $stmt->close();
-        $conn->close();
-    }
-
+<?php 
+    error_reporting(E_ALL); // Enable error reporting for development
+    ini_set('display_errors', 1);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
-<?php 
-    include "header.php"; 
-    include "connect.php";
-
-?>
+<?php include "header.php"; ?>
 
 <body>
-
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-org-chart@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js"></script>
+    
+    <!--*******************
+        Preloader start
+    ********************-->
+    <?php include"loadingscreen.php" ?>
+    <!--*******************
+        Preloader end
+    ********************-->
+    
     <!--**********************************
         Main wrapper start
     ***********************************-->
     <div id="main-wrapper">
 
-        <?php include "sidebar.php"; ?>
+        <?php 
+            
+            include "sidebar.php";
+            
+            // Fetch role from session
+            $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'user';
+        ?>
 
         <!--**********************************
             Content body start
         ***********************************-->
-        <div class="content-body" style="background-color: #f1f9f1">
-            <div class="container-fluid" >
+        <div class="content-body" style="color: #098209; background-color: #f1f9f1;">
+            <div class="container-fluid">
                 <!-- row -->
-                <div class="row d-flex justify-content-center">
-                    <div class="col-xl-8 col-xxl-12 items-center">                        
-                        <div class="card" style="align-self: center;">
-                            <div class="card-header d-flex justify-content-center">
-                                <h4 class="card-title text-center" style="color: #098209; ">VIEW COMMITTEE</h4>
+                <div class="row">
+                    <?php
+                        include("connect.php");
+                        $id = intval($_GET['id']); // Ensure ID is an integer
+                        $sql = "SELECT * FROM `committee` WHERE id = $id LIMIT 1";
+                        $result = mysqli_query($conn, $sql);
+                        
+                        if ($result && mysqli_num_rows($result) > 0) {
+                            $row = mysqli_fetch_assoc($result);
+                        } else {
+                            echo "<script>alert('Invalid Record ID!'); window.location.href='listOfCommittee.php';</script>";
+                            exit;
+                        }
+                    ?>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center p-3 mt-4">
+                                <h1 class="card-title flex-grow-1 fs-4 fw-bold text-dark text-center" style="color: #000000">COMMITTEE ON <?php echo strtoupper(htmlspecialchars($row['name'])); ?></h1>
                             </div>
                             <div class="card-body">
-                                <div class="basic-form">
-                                    <form action="<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post" enctype="multipart/form-data">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label" style="color: #000000">Committee Name: </label>
-                                            <div class="col-sm-9">
-                                                <input type="text" class="form-control" placeholder="Please type here..." id="committeeName" name="committeeName" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                             <label class="col-sm-3 col-form-label" style="color:#000000">Committee Description: </label>
-                                             <div class="col-sm-9">
-                                                <textarea class="form-control dynamic-textarea" style="resize: none; overflow: hidden;" rows="1" placeholder="Please type here..." id="committeeDescription" name="committeeDescription"></textarea>
-                                             </div>
-                                        </div>
-                                        <label style="color: #000000">Upload Image of the Committee:</label>
-                                        <!-- Image -->
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" style="background-color: #098209;">
-                                                    <i class="fa fa-paperclip"></i>
-                                                </span>
-                                            </div>
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="committeeImg" name="committeeImg" accept="image/*" onchange="updateFileName(this)">
-                                                <label class="custom-file-label text-truncate" for="committeeImg" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block;">Choose image</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-danger" type="button" onclick="removeFile()"><i class="fa fa-close"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <div class="chart-container" style="height: 1200px; background-color: #fffeff"></div>
                             </div>
                         </div>
                     </div>
@@ -161,64 +83,60 @@
     <script src="./js/quixnav-init.js"></script>
     <script src="./js/custom.min.js"></script>
 
-    <script> 
-
-        // Function to auto-expand the textarea
-        function autoExpand(event) {
-            const textarea = event.target;
-            textarea.style.height = "auto"; 
-            textarea.style.height = textarea.scrollHeight + "px"; 
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const textarea = document.getElementById("committeeDescription");
-            textarea.addEventListener("input", autoExpand);
-        });
-    </script>
-
     <script>
-        function updateFileName(input) {
-            const fileInput = input;
-            if (fileInput.files.length > 0) {
-                const fileName = fileInput.files[0].name;
-                const label = fileInput.nextElementSibling; // label associated with input
-                label.textContent = fileName;
-            } else {
-                const label = fileInput.nextElementSibling;
-                label.textContent = "Choose image";
-            }
-        }
+    var chart;
 
-        function removeFile() {
-            const fileInput = document.getElementById("committeeImg");
-            const fileLabel = fileInput.nextElementSibling;
+    fetch('get-OfficialsData.php')
+        .then((response) => response.json())
+        .then((dataFlattened) => {
+            chart = new d3.OrgChart()
+            .container('.chart-container')
+            .data(dataFlattened)
+            .rootMargin(100)
+            .nodeWidth((d) => 210)
+            .nodeHeight((d) => 140)
+            .childrenMargin((d) => 130)
+            .compactMarginBetween((d) => 75)
+            .compactMarginPair((d) => 80)
+            .linkUpdate(function (d, i, arr) {
+                d3.select(this)
+                .attr('stroke', (d) =>
+                    d.data._upToTheRootHighlighted ? '#152785' : 'lightgray'
+                )
+                .attr('stroke-width', (d) =>
+                    d.data._upToTheRootHighlighted ? 5 : 1.5
+                )
+                .attr('stroke-dasharray', '4,4');
 
-            fileInput.value = ""; // Clear file inputs
-            fileLabel.textContent = "Choose file"; // Reset labels
-        }
-    </script>
-
-    <script>
-        document.getElementById('cancel_btn').addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent immediate navigation
-            const redirectUrl = this.getAttribute('data-href');
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "All unsaved changes will be lost.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, cancel it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = redirectUrl;
+                if (d.data._upToTheRootHighlighted) {
+                d3.select(this).raise();
                 }
-            });
+            })
+            .nodeContent(function (d, i, arr, state) {
+                const colors = ['#6E6B6F', '#18A8B6', '#F45754', '#96C62C', '#BD7E16', '#802F74'];
+                const color = colors[d.depth % colors.length];
+                const imageDim = 80;
+                const lightCircleDim = 95;
+                const outsideCircleDim = 110;
+
+                return `
+                <div style="background-color:white; position:absolute;width:${d.width}px;height:${d.height}px;">
+                    <div style="background-color:${color};position:absolute;margin-top:-${outsideCircleDim / 2}px;margin-left:${d.width / 2 - outsideCircleDim / 2}px;border-radius:100px;width:${outsideCircleDim}px;height:${outsideCircleDim}px;"></div>
+                    <div style="background-color:#ffffff;position:absolute;margin-top:-${lightCircleDim / 2}px;margin-left:${d.width / 2 - lightCircleDim / 2}px;border-radius:100px;width:${lightCircleDim}px;height:${lightCircleDim}px;"></div>
+                    <img src="${d.data.imageUrl}" style="position:absolute;margin-top:-${imageDim / 2}px;margin-left:${d.width / 2 - imageDim / 2}px;border-radius:100px;width:${imageDim}px;height:${imageDim}px;" />
+                    <div class="card" style="top:${outsideCircleDim / 2 + 10}px;position:absolute;height:30px;width:${d.width}px;background-color:#3AB6E3;">
+                    <div style="background-color:${color};height:28px;text-align:center;padding-top:10px;color:#ffffff;font-weight:bold;font-size:16px">
+                        ${d.data.name}
+                    </div>
+                    <div style="background-color:#F0EDEF;height:28px;text-align:center;padding-top:10px;color:#424142;font-size:16px">
+                        ${d.data.positionName}
+                    </div>
+                    </div>
+                </div>`;
+            })
+            .render();
         });
     </script>
-    
 
 </body>
 

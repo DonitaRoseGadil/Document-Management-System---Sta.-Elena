@@ -101,7 +101,7 @@
                                                         <td style="pointer-events: none; border-bottom: 1px solid #098209;"><?php echo $row["term"]?></td>
                                                         <td style="border-bottom: 1px solid #098209; border-right: 1px solid #098209; text-align: center; vertical-align: middle;">
                                                             <div class="d-flex justify-content-center align-items-center gap-2">
-                                                                <a href="#?id=<?php echo $row["id"] ?>" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center p-2">
+                                                                <a href="viewOfficials.php?id=<?php echo $row["id"] ?>" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center p-2">
                                                                     <i class="fa fa-eye" aria-hidden="true" style="color: #FFFFFF;"></i>
                                                                 </a>
                                                                 <a onclick="confirmEdit(<?php echo $row['id']; ?>)" class="btn btn-success btn-sm d-flex align-items-center justify-content-center p-2 ml-1 mr-1">
