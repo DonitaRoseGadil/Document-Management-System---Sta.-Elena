@@ -69,7 +69,11 @@
                                                 <h5 class="card-title"><?php echo htmlspecialchars($row['name']); ?></h5>
                                             </div>
                                             <div class="card-body">
-                                                <p class="card-text" style="color:#000000"><?php echo htmlspecialchars($row['cmteDescription']); ?></p>
+                                                <p class="card-text" style="color:#000000; white-space: pre-wrap;"><?php 
+                                                    $desc = htmlspecialchars($row['cmteDescription']);
+                                                    $desc = strlen($desc) > 150 ? substr($desc, 0, 150) . '...' : $desc;
+                                                    echo nl2br($desc);
+                                                ?></p>
                                             </div>
                                             <img class="card-img-bottom img-fluid" src="<?php echo htmlspecialchars($row['cmteImage']) ?>" alt="Card image" style="max-height: 200px; object-fit: cover;">
                                             <div class="card-footer">
