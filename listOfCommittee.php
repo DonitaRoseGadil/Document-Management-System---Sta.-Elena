@@ -77,7 +77,7 @@
                                                             <a href="editCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm p-2 mr-2">
                                                                 <i class="fa fa-edit" style="color: #ffffff;"></i>
                                                             </a>
-                                                            <a href="deleteCommittee.php?id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm p-2">
+                                                            <a onclick="confirmDelete(<?php echo $row['id']; ?>)" class="btn btn-danger btn-sm p-2">
                                                                 <i class="fa fa-trash" style="color: #ffffff;"></i> 
                                                             </a>
                                                         </div>
@@ -115,6 +115,64 @@
     <script src="./vendor/global/global.min.js"></script>
     <script src="./js/quixnav-init.js"></script>
     <script src="./js/custom.min.js"></script>
+
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Enter Password",
+                input: "password",
+                inputAttributes: {
+                    autocapitalize: "off",
+                    required: true
+                },
+                showCancelButton: true,
+                confirmButtonText: "Submit",
+                showLoaderOnConfirm: true,
+                preConfirm: (password) => {
+                    return fetch("validate_password.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "password=" + encodeURIComponent(password)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            throw new Error(data.message || "Incorrect password.");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(error.message);
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Confirm!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Committee has been deleted.",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            window.location.href = 'deleteCommittee.php?id=' + id;
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 
 </body>
 
