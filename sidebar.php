@@ -80,6 +80,7 @@
                     <li><a href="./files-resolution.php">Resolution</a></li>
                     <li><a href="./files-ordinances.php">Ordinance</a></li>
                     <li><a href="./files-meetingminutes.php">Order of Business</a></li>
+                    <li><a href="./files-committee-report.php">Committee Report</a></li>
                 </ul>
             </li>
             <li>

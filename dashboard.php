@@ -129,6 +129,15 @@
                                         <button class="btn btn-success btn-sm" onclick="window.location.href='addmeetingminutes.php';">+</button>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12">
+                                    <div class="card p-2 d-flex align-items-center"
+                                        style="margin-bottom: 10px; border-radius: 6px; border: 1px solid #098209; 
+                                                display: flex; flex-direction: row; justify-content: space-between;">
+                                        <span style="color: black; font-weight: bold;">Add new committee report</span>
+                                        <button class="btn btn-success btn-sm" onclick="window.location.href='addCommitteeReports.php';">+</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <?php } ?>
