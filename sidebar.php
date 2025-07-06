@@ -95,9 +95,6 @@
                 <a href="./listOfMember.php" aria-expanded="false"><i class="icon icon-users-mm"></i><span class="nav-text">Members</span></a>
             </li>
             <li>
-                <a href="./listOfCommittee.php" aria-expanded="false"><i class="icon icon-single-content-03"></i><span class="nav-text">Committee</span></a>
-            </li>
-            <li>
                 <a href="./files-officials.php" aria-expanded="false"><i class="icon icon-single-copies"></i><span class="nav-text">Composition Data</span></a>
             </li>
             <!-- <li>
