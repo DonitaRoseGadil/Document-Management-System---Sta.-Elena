@@ -47,7 +47,7 @@ ini_set('display_errors', 1);
 
                     <!-- Modal Body -->
                     <div class="modal-body">
-                        <form id="reportForm" action="generateresreport.php" enctype="multipart/form-data" method="POST">
+                        <form id="reportForm" action="generatecomreport.php" enctype="multipart/form-data" method="POST">
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
@@ -89,7 +89,7 @@ ini_set('display_errors', 1);
                             </div> -->
 
                             <!-- Add the "All Reports" checkbox -->
-                            <!-- <div class="row mb-3">
+                            <div class="row mb-3">
                                 <div class="col-md-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="generateAllReports" name="generateAllReports" value="on">
@@ -98,7 +98,7 @@ ini_set('display_errors', 1);
                                         </label>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
                         </form>
                     </div>
