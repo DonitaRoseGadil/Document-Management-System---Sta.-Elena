@@ -91,15 +91,6 @@
                     <a href="./manageAccounts.php" aria-expanded="false"><i class="icon icon-single-04"></i><span class="nav-text">Manage Accounts</span></a>
                 </li>
             <?php } ?>
-            <li>
-                <a href="./listOfMember.php" aria-expanded="false"><i class="icon icon-users-mm"></i><span class="nav-text">Members</span></a>
-            </li>
-            <li>
-                <a href="./files-officials.php" aria-expanded="false"><i class="icon icon-single-copies"></i><span class="nav-text">Composition Data</span></a>
-            </li>
-            <!-- <li>
-                <a href="./manual.php" aria-expanded="false"><i class="icon icon-book-open-2"></i><span class="nav-text">Manual</span></a>
-            </li> -->
         </ul>
     </div>
 
