@@ -243,8 +243,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                                 <span class="input-group-text" style="background-color: #098209;"> <i class="fa fa-paperclip"></i></span>
                                             </div>
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="attachment_path" value="attachment" name="attachment_path" onchange="updateFileName('attachmentLabel')">
-                                                <label class="custom-file-label" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block;" id="attachmentLabel"> 
+                                                <input type="file" class="custom-file-input" id="attachment_path" value="attachment_path" name="attachment_path" onchange="updateFileName('attachment_pathLabel')">
+                                                <label class="custom-file-label" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block;" id="attachment_pathLabel"> 
                                                     <?php echo !empty($row['attachment_path']) ? $row['attachment_path'] : "Choose file"; ?>
                                                 </label>
                                             </div>
@@ -291,10 +291,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function removeFile() {
             const fileInput = document.getElementById("attachment_path");
-            const fileLabel = fileInput.nextElementSibling;
+            fileInput.value = "";
 
-            fileInput.value = ""; // Clear file inputs
-            fileLabel.textContent = "Choose file"; // Reset labels
+            const fileLabel = document.getElementById("attachment_pathLabel");
+            fileLabel.innerText = "Choose file";
         }
 
         function autoResizeTextarea(textarea) {
