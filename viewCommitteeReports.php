@@ -41,6 +41,40 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     }
 }
 
+    $sectionsByCategory = [
+        "Economic" => [
+            "Committee on Market and Slaughterhouse",
+            "Committee on Cooperatives, People’s Organization and Non-Government Organizations",
+            "Committee on Tourism",
+            "Committee on Finance, Budget and Appropriations",
+            "Committee on Agriculture and Livelihood",
+            "Committee on Trade, Commerce and Industry",
+            "Committee on Public Utilities and Facilities"
+        ],
+        "Social" => [
+            "Committee on Youth and SK Affairs",
+            "Committee on Sports",
+            "Committee on Games and Amusement",
+            "Committee on Housing and Land Utilization",
+            "Committee on Education, Culture and Arts",
+            "Committee on Peace and Order and Public Safety",
+            "Committee on Health, Sanitation and Social Welfare",
+            "Committee on Women, Family and Human Rights"
+        ],
+        "Infrastructure" => [
+            "Committee on Public Works and Infrastructure"
+        ],
+        "Institutional" => [
+            "Committee on Good Government, Public Ethics and Accountability",
+            "Committee on Rules and Legal Matters",
+            "Committee on Barangay Affairs"
+        ],
+        "Environmental" => [
+            "Committee on Environmental Protection"
+        ]
+    ];
+
+
 $conn->close();
 ?>
 <head>
@@ -98,13 +132,13 @@ $conn->close();
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" style="color: #000000">Committee Category:</label>
                                             <div class="col-sm-9">
-                                                <select id="committee_category" name="committee_category" class="form-control" onchange="filterCommittees()" disabled>
+                                                <select id="committee_category" name="committee_category" class="form-control" disabled>
                                                     <option value="" disabled>Select Category</option>
-                                                    <option value="Economic" <?php if($selectedCategory == "Economic") echo "selected"; ?>>Economic</option>
-                                                    <option value="Social" <?php if($selectedCategory == "Social") echo "selected"; ?>>Social</option>
-                                                    <option value="Infrastructure" <?php if($selectedCategory == "Infrastructure") echo "selected"; ?>>Infrastructure</option>
-                                                    <option value="Institutional" <?php if($selectedCategory == "Institutional") echo "selected"; ?>>Institutional</option>
-                                                    <option value="Environmental" <?php if($selectedCategory == "Environmental") echo "selected"; ?>>Environmental</option>
+                                                    <?php foreach ($sectionsByCategory as $category => $sections): ?>
+                                                        <option value="<?= htmlspecialchars($category) ?>" <?= $selectedCategory === $category ? 'selected' : '' ?>>
+                                                            <?= htmlspecialchars($category) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -114,11 +148,16 @@ $conn->close();
                                             <div class="col-sm-9">
                                                 <select id="committee_section" name="committee_section" class="form-control" disabled>
                                                     <option value="" disabled>Select Committee</option>
-                                                    <!-- JS will populate this based on category -->
+                                                    <?php if (isset($sectionsByCategory[$selectedCategory])): ?>
+                                                        <?php foreach ($sectionsByCategory[$selectedCategory] as $section): ?>
+                                                            <option value="<?= htmlspecialchars($section) ?>" <?= $selectedSection === $section ? 'selected' : '' ?>>
+                                                                <?= htmlspecialchars($section) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label" style="color: #000000">Councilor:</label>
                                             <div class="col-sm-9">
@@ -351,6 +390,7 @@ $conn->close();
                 }
             });
         });
+
     </script>
 
     
