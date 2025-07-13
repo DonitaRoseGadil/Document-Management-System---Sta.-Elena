@@ -607,7 +607,7 @@
         form.addEventListener("submit", validateForm);
     });
 
-    function updateMinDate(fieldId, targetIds) {
+    /*function updateMinDate(fieldId, targetIds) {
         let selectedDate = document.getElementById(fieldId).value;
         if (selectedDate) {
             targetIds.forEach(targetId => {
@@ -626,8 +626,51 @@
 
     document.getElementById("dateSigned").addEventListener("change", function () {
         updateMinDate("dateSigned", ["dateApproved"]);
+    }); */
+
+    function updateMinDate(fieldId, targetIds) {
+        let selectedDate = document.getElementById(fieldId).value;
+        if (selectedDate) {
+            targetIds.forEach(targetId => {
+                document.getElementById(targetId).min = selectedDate;
+            });
+        }
+    }
+
+    // Updated event listeners with modified logic
+    document.getElementById("dateAdopted").addEventListener("change", function () {
+        let adoptedDate = this.value;
+        if (adoptedDate) {
+            // Date Forwarded should be same date or later than Date Adopted
+            document.getElementById("dateForwarded").min = adoptedDate;
+            
+            // Date Signed can be the same as Date Adopted (no minimum restriction from adopted date)
+            document.getElementById("dateSigned").min = adoptedDate;
+            
+            // Date Approved should be same date or later than Date Adopted
+            document.getElementById("dateApproved").min = adoptedDate;
+        }
     });
-    
+
+    document.getElementById("dateForwarded").addEventListener("change", function () {
+        let forwardedDate = this.value;
+        if (forwardedDate) {
+            // Date Signed should be same date or later than Date Forwarded
+            document.getElementById("dateSigned").min = forwardedDate;
+            
+            // Date Approved should be same date or later than Date Forwarded
+            document.getElementById("dateApproved").min = forwardedDate;
+        }
+    });
+
+    document.getElementById("dateSigned").addEventListener("change", function () {
+        let signedDate = this.value;
+        if (signedDate) {
+            // Date Approved should be same date or later than Date Signed
+            document.getElementById("dateApproved").min = signedDate;
+        }
+    });
+        
     </script>
 
     <script>
