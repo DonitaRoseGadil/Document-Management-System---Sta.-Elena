@@ -236,6 +236,7 @@ if(isset($_POST['save'])){
                                                     <option value="Santa Elena (Pob.)" <?php if($row['brgy'] == 'Santa Elena (Pob.)') echo 'selected'; ?>>Santa Elena (Pob.)</option>
                                                     <option value="Tabugon" <?php if($row['brgy'] == 'Tabugon') echo 'selected'; ?>>Tabugon</option>
                                                     <option value="Villa San Isidro" <?php if($row['brgy'] == 'Villa San Isidro') echo 'selected'; ?>>Villa San Isidro</option>
+                                                    <option value="Applicable to the whole Municipality" <?php if($row['brgy'] == 'Applicable to the whole Municipality') echo 'selected'; ?>>Applicable to the whole Municipality</option>
                                                 </select>
                                             </div>
                                         </div>

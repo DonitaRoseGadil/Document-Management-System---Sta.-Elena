@@ -215,6 +215,7 @@
                                                     <option value="Santa Elena (Pob.)">Santa Elena (Pob.)</option>
                                                     <option value="Tabugon">Tabugon</option>
                                                     <option value="Villa San Isidro">Villa San Isidro</option>
+                                                    <option value="Applicable to the whole Municipality">Applicable to the whole Municipality</option>
                                                 </select>
                                              </div>
                                         </div>
